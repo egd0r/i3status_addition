@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#awk -F"|" '{split($3,opt," ");print opt[1]}' |
+i3status | while :
+do
+    read line 
+
+    IFS="|", read -r -a linesplitarray <<< "${line}"
+    linesplit=${linesplitarray[2]};
+
+    [ ${linesplit:0:4} != "BAT" ] && echo "NOT EQUAL TO BAT" && exit 1;
+
+    percent=$(echo ${linesplit:0:10} | tr -d -c 0-9)
+    [ $percent -lt 500 ] && $(notify-send -u critical "LOW BAT");
+    exit 1;
+
+done
