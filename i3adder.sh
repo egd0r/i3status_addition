@@ -65,14 +65,14 @@ do
 
     end=${weather: -5}
 
-    [[ ${weather} =~ -*([0-9]) ]] && temp=${BASH_REMATCH[1]}+30
+    [[ ${weather} =~ -*([0-9]) ]] && temp=${BASH_REMATCH[1]}+28
 
     color="${temps[$temp]}"
 
     vpnconnresponse=$(curl -s https://am.i.mullvad.net/connected)
     response=""
     colour="#00FF00"
-    [[ $vpnconnresponse == *"not connected"* ]] && response="⚠" && colour="#FF0000"
+    [[ $vpnconnresponse == *"not connected"* ]] && response="⚠ " && colour="#FF0000"
     [[ $vpnconnresponse == *"are connected"* ]] && IFS=' ', read -r -a vpnconn <<< "${vpnconnresponse}" && cutted=$(echo ${vpnconn[6]} | sed 's/..$//') && response="${cutted} 📡 ${vpnconn[11]}"
     
     echo ",[{\"full_text\":\"${response}\",\"color\":\"$colour\" },{\"full_text\":\"${weather}\",\"color\":\"$color\" },${line#,\[}" || exit 1
